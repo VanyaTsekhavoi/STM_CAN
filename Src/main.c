@@ -49,6 +49,8 @@
 
 /* USER CODE BEGIN PV */
 
+volatile int8_t alowTransmity;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -97,8 +99,27 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
 
+  CAN_FilterTypeDef sFilterConfig;
+  sFilterConfig.FilterIdHigh = 0x0000;
+  sFilterConfig.FilterIdLow = 0x0000;
+  sFilterConfig.FilterMaskIdHigh = 0x0000;
+  sFilterConfig.FilterMaskIdLow = 0x0000;
+  sFilterConfig.FilterFIFOAssignment = 0;
+  sFilterConfig.FilterBank = 0;
+  sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
+  sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+  sFilterConfig.FilterActivation = ENABLE;
+  sFilterConfig.SlaveStartFilterBank = 14;
+  
+  if (HAL_CAN_ConfigFilter(&hcan1, &sFilterConfig) != HAL_OK)
+  {
+    /* Filter configuration Error */
+    Error_Handler();
+  }
+
   HAL_CAN_Start(&hcan1);
   HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
+  HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO1_MSG_PENDING);
 
   /* USER CODE END 2 */
  
@@ -112,6 +133,30 @@ int main(void)
   {
     /* USER CODE END WHILE */
 
+    while (alowTransmity)
+    {
+      if (HAL_CAN_GetTxMailboxesFreeLevel(&hcan1) != 0)
+      {
+        CAN_TxHeaderTypeDef msgHeader;
+        uint8_t msgData[8];
+        msgHeader.StdId = 0x200;
+        msgHeader.DLC = 8;
+        msgHeader.TransmitGlobalTime = DISABLE;
+        msgHeader.RTR = CAN_RTR_DATA;
+        msgHeader.IDE = CAN_ID_STD;
+
+        uint32_t mailBoxNum = 0;
+
+        for (uint8_t i = 0; i < 8; i++)
+        {
+          msgData[i] = i;
+        }
+
+        HAL_CAN_AddTxMessage(&hcan1, &msgHeader, msgData, &mailBoxNum);
+      }
+      alowTransmity = 0;
+    }
+    
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -194,6 +239,27 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan1)
   {
     msgId = msgHeader.StdId;
   }
+  alowTransmity = 1;
+}
+
+void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan1)
+{
+  CAN_RxHeaderTypeDef msgHeader;
+  uint32_t msgId = 0;
+  uint8_t msgData[8];
+
+  HAL_CAN_GetRxMessage(hcan1, CAN_RX_FIFO0, &msgHeader, msgData);
+
+  if (msgHeader.IDE == CAN_ID_EXT)
+  {
+    msgId = msgHeader.ExtId;
+  }
+  else
+  {
+    msgId = msgHeader.StdId;
+  }
+
+  alowTransmity = 1;
 }
 
 void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan1)
