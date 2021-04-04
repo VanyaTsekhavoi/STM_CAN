@@ -67,7 +67,12 @@ Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c \
 Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pcd.c \
 Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pcd_ex.c \
 Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_usb.c \
-Src/system_stm32f7xx.c
+Src/system_stm32f7xx.c \
+CANopenSTM/canopen_link.c \
+CANopenSTM/CO_driver.c \
+CANopenSTM/CO_OD.c \
+CANopenSTM/co_storage.c \
+CANopenSTM/CANopen.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -130,7 +135,8 @@ C_INCLUDES =  \
 -IDrivers/STM32F7xx_HAL_Driver/Inc/Legacy \
 -IDrivers/CMSIS/Device/ST/STM32F7xx/Include \
 -IDrivers/CMSIS/include \
--IDrivers/CMSIS/Include
+-IDrivers/CMSIS/Include \
+-ICANopenSTM
 
 
 # compile gcc flags

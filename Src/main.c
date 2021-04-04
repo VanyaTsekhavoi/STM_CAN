@@ -57,6 +57,10 @@ volatile int8_t alowTransmity;
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 
+void Transmit_Back();
+extern void config(void);
+extern void loop(void);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -99,6 +103,8 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
 
+  config();
+
   CAN_FilterTypeDef sFilterConfig;
   sFilterConfig.FilterIdHigh = 0x0000;
   sFilterConfig.FilterIdLow = 0x0000;
@@ -132,31 +138,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    loop();
 
-    while (alowTransmity)
-    {
-      if (HAL_CAN_GetTxMailboxesFreeLevel(&hcan1) != 0)
-      {
-        CAN_TxHeaderTypeDef msgHeader;
-        uint8_t msgData[8];
-        msgHeader.StdId = 0x200;
-        msgHeader.DLC = 8;
-        msgHeader.TransmitGlobalTime = DISABLE;
-        msgHeader.RTR = CAN_RTR_DATA;
-        msgHeader.IDE = CAN_ID_STD;
-
-        uint32_t mailBoxNum = 0;
-
-        for (uint8_t i = 0; i < 8; i++)
-        {
-          msgData[i] = i;
-        }
-
-        HAL_CAN_AddTxMessage(&hcan1, &msgHeader, msgData, &mailBoxNum);
-      }
-      alowTransmity = 0;
-    }
-    
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -222,6 +205,33 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void Transmit_Back()
+{
+  if (alowTransmity)
+  {
+    if (HAL_CAN_GetTxMailboxesFreeLevel(&hcan1) != 0)
+    {
+      CAN_TxHeaderTypeDef msgHeader;
+      uint8_t msgData[8];
+      msgHeader.StdId = 0x200;
+      msgHeader.DLC = 8;
+      msgHeader.TransmitGlobalTime = DISABLE;
+      msgHeader.RTR = CAN_RTR_DATA;
+      msgHeader.IDE = CAN_ID_STD;
+
+      uint32_t mailBoxNum = 0;
+
+      for (uint8_t i = 0; i < 8; i++)
+      {
+        msgData[i] = i;
+      }
+
+      HAL_CAN_AddTxMessage(&hcan1, &msgHeader, msgData, &mailBoxNum);
+    }
+    alowTransmity = 0;
+  }
+}
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan1)
 {
