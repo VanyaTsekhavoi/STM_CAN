@@ -24,9 +24,9 @@
  * limitations under the License.
  */
 
-
 #include "CANopen.h"
-
+#include "CO_OD.h"
+//#include "CO_OD_temp.h"
 #include <stdlib.h>
 
 
@@ -246,21 +246,21 @@ CO_ReturnError_t CO_new(uint32_t *heapMemoryUsed) {
     CO_memoryUsed += sizeof(CO_LEDs_t);
 #endif
 
-#if CO_NO_LSS_SLAVE == 1
+#if CO_NO_LSS_SLAVE & 0 == 1
     /* LSSslave */
     CO->LSSslave = (CO_LSSslave_t *)calloc(1, sizeof(CO_LSSslave_t));
     if (CO->LSSslave == NULL) errCnt++;
     CO_memoryUsed += sizeof(CO_LSSslave_t);
 #endif
 
-#if CO_NO_LSS_MASTER == 1
+#if CO_NO_LSS_MASTER & 0 == 1
     /* LSSmaster */
     CO->LSSmaster = (CO_LSSmaster_t *)calloc(1, sizeof(CO_LSSmaster_t));
     if (CO->LSSmaster == NULL) errCnt++;
     CO_memoryUsed += sizeof(CO_LSSmaster_t);
 #endif
 
-#if (CO_CONFIG_GTW) & CO_CONFIG_GTW_ASCII
+#if (CO_CONFIG_GTW) & 0 & CO_CONFIG_GTW_ASCII
     /* Gateway-ascii */
     CO->gtwa = (CO_GTWA_t *)calloc(1, sizeof(CO_GTWA_t));
     if (CO->gtwa == NULL) errCnt++;
@@ -319,17 +319,17 @@ void CO_delete(void *CANptr) {
     }
 #endif
 
-#if (CO_CONFIG_GTW) & CO_CONFIG_GTW_ASCII
+#if (CO_CONFIG_GTW) & CO_CONFIG_GTW_ASCII & 0
     /* Gateway-ascii */
     free(CO->gtwa);
 #endif
 
-#if CO_NO_LSS_MASTER == 1
+#if CO_NO_LSS_MASTER & 0 == 1
     /* LSSmaster */
     free(CO->LSSmaster);
 #endif
 
-#if CO_NO_LSS_SLAVE == 1
+#if CO_NO_LSS_SLAVE & 0 == 1
     /* LSSslave */
     free(CO->LSSslave);
 #endif
@@ -595,7 +595,7 @@ CO_ReturnError_t CO_CANinit(void *CANptr,
 
 
 /******************************************************************************/
-#if CO_NO_LSS_SLAVE == 1
+#if CO_NO_LSS_SLAVE & 0 == 1
 CO_ReturnError_t CO_LSSinit(uint8_t *nodeId,
                             uint16_t *bitRate)
 {
@@ -631,7 +631,7 @@ CO_ReturnError_t CO_CANopenInit(uint8_t nodeId) {
 
     /* Verify CANopen Node-ID */
     CO->nodeIdUnconfigured = false;
-#if CO_NO_LSS_SLAVE == 1
+#if CO_NO_LSS_SLAVE & 0 == 1
     if (nodeId == CO_LSS_NODE_ID_ASSIGNMENT) {
         CO->nodeIdUnconfigured = true;
     }
@@ -648,13 +648,15 @@ CO_ReturnError_t CO_CANopenInit(uint8_t nodeId) {
     }
 #endif
     if (sizeof(OD_TPDOCommunicationParameter_t) != sizeof(CO_TPDOCommPar_t) ||
-        sizeof(OD_TPDOMappingParameter_t)       != sizeof(CO_TPDOMapPar_t)  ||
+        sizeof(OD_TPDOMappingParameter_t) != sizeof(CO_TPDOMapPar_t) ||
         sizeof(OD_RPDOCommunicationParameter_t) != sizeof(CO_RPDOCommPar_t) ||
-        sizeof(OD_RPDOMappingParameter_t)       != sizeof(CO_RPDOMapPar_t)) {
+        sizeof(OD_RPDOMappingParameter_t) != sizeof(CO_RPDOMapPar_t))
+    {
         return CO_ERROR_OD_PARAMETERS;
     }
 #if CO_NO_SDO_CLIENT != 0
-    if (sizeof(OD_SDOClientParameter_t)         != sizeof(CO_SDOclientPar_t)) {
+    if (sizeof(OD_SDOClientParameter_t) != sizeof(CO_SDOclientPar_t))
+    {
         return CO_ERROR_OD_PARAMETERS;
     }
 #endif
@@ -681,7 +683,8 @@ CO_ReturnError_t CO_CANopenInit(uint8_t nodeId) {
             COB_IDClientToServer = CO_CAN_ID_SDO_CLI + nodeId;
             COB_IDServerToClient = CO_CAN_ID_SDO_SRV + nodeId;
         }
-        else {
+        else
+        {
             COB_IDClientToServer =
                 OD_SDOServerParameter[i].COB_IDClientToServer;
             COB_IDServerToClient =
@@ -896,7 +899,7 @@ CO_ReturnError_t CO_CANopenInit(uint8_t nodeId) {
     }
 #endif
 
-#if CO_NO_LSS_MASTER == 1
+#if CO_NO_LSS_MASTER & 0 == 1
     /* LSSmaster */
     err = CO_LSSmaster_init(CO->LSSmaster,
                             CO_LSSmaster_DEFAULT_TIMEOUT,
@@ -910,7 +913,7 @@ CO_ReturnError_t CO_CANopenInit(uint8_t nodeId) {
     if (err) return err;
 #endif
 
-#if (CO_CONFIG_GTW) & CO_CONFIG_GTW_ASCII
+#if (CO_CONFIG_GTW) & CO_CONFIG_GTW_ASCII & 0
     /* Gateway-ascii */
     err = CO_GTWA_init(CO->gtwa,
 #if (CO_CONFIG_GTW) & CO_CONFIG_GTW_ASCII_SDO
@@ -954,8 +957,7 @@ CO_ReturnError_t CO_CANopenInit(uint8_t nodeId) {
 #endif
 
     return CO_ERROR_NO;
-}
-
+        }
 
 /******************************************************************************/
 CO_NMT_reset_cmd_t CO_process(CO_t *co,
@@ -966,9 +968,9 @@ CO_NMT_reset_cmd_t CO_process(CO_t *co,
     bool_t NMTisPreOrOperational = false;
     CO_NMT_reset_cmd_t reset = CO_RESET_NOT;
 
-    CO_CANmodule_process(CO->CANmodule[0]);
+    CO_CANverifyErrors(CO->CANmodule[0]);
 
-#if CO_NO_LSS_SLAVE == 1
+#if CO_NO_LSS_SLAVE & 0 == 1
     bool_t resetLSS = CO_LSSslave_process(co->LSSslave);
 #endif
 
@@ -995,7 +997,7 @@ CO_NMT_reset_cmd_t CO_process(CO_t *co,
                     timerNext_us);
 #endif /* (CO_CONFIG_LEDS) & CO_CONFIG_LEDS_ENABLE */
 
-#if CO_NO_LSS_SLAVE == 1
+#if CO_NO_LSS_SLAVE & 0 == 1
     if (resetLSS) {
         reset = CO_RESET_COMM;
     }
@@ -1044,7 +1046,7 @@ CO_NMT_reset_cmd_t CO_process(CO_t *co,
                           timeDifference_us,
                           timerNext_us);
 
-#if (CO_CONFIG_GTW) & CO_CONFIG_GTW_ASCII
+#if (CO_CONFIG_GTW) & CO_CONFIG_GTW_ASCII & 0
     /* Gateway-ascii */
     CO_GTWA_process(co->gtwa,
                     CO_GTWA_ENABLE,

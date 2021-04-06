@@ -1,7 +1,7 @@
 #include "canopen_link.h"
-//#include "platform_reset.h"
-#include "co_storage.h"
-
+#include "can.h"
+#include "platform_reset.h"
+#include "CO_OD.h"
 
 static inline void timebase_init()
 {
@@ -14,22 +14,25 @@ static inline int32_t timebase_mark(int32_t *m)
 {
 	int32_t mark = (1 << 24) - SysTick->VAL - 1;
 	int32_t prev = *m;
-	*m = mark;		
+	*m = mark;
 
 	return (mark - prev + (1 << 24)) & ((1 << 24) - 1);
 }
-
 
 static CO_NMT_reset_cmd_t reset = CO_RESET_NOT;
 static int32_t clk = 0;
 static int32_t clk_mhz = 1;
 static int32_t process_timer = 0;
 static int32_t ticks_per_ms = 0;
+static CO_ReturnError_t err;
+static uint32_t heapMemoryUsed;
+#define OD_CANBitRate 0
+#define OD_CANNodeID 0x30
 
 void canopen_link_init()
 {
-	const int canbr[] = {1000, 800, 500, 250, 125, 100, 50, 20, 10, 2000, 3000}; 
-    extern const CO_OD_entry_t CO_OD[CO_OD_NoOfElements];
+	/*
+	extern const CO_OD_entry_t CO_OD[CO_OD_NoOfElements];
 
 	co_storage_read_od(CO_OD, CO_OD_NoOfElements);
 
@@ -37,14 +40,26 @@ void canopen_link_init()
 	{
 		OD_CANBitRate = 2;
 	}
+	*/
 
-	if(CO_init((int32_t)CAN1, OD_CANNodeID, canbr[OD_CANBitRate]) != CO_ERROR_NO)
+	/* Configure microcontroller. */
+	const int canbr[] = {1000, 800, 500, 250, 125, 100, 50, 20, 10, 2000, 3000};
+
+	if (CO_init((int32_t)CAN1, OD_CANNodeID, canbr[OD_CANBitRate]) != CO_ERROR_NO)
 	{
 		platform_do_reset();
 	}
 
-	co_storage_init(CO);
+	/* Configure Timer interrupt function for execution every 1 millisecond */
 
+	/* Configure CAN transmit and receive interrupt */
+
+	/* Configure CANopen callbacks, etc */
+	if (!CO->nodeIdUnconfigured)
+	{
+	}
+
+	/* start CAN */
 	CO_CANsetNormalMode(CO->CANmodule[0]);
 
 	timebase_init();
@@ -59,32 +74,76 @@ void canopen_link_poll()
 	int32_t delta_us = dclk / clk_mhz;
 	process_timer += dclk;
 
+	/* CANopen process */
 	CO_CANinterrupt(CO->CANmodule[0]);
 
-	if(CO->CANmodule[0]->CANnormal) 
+	if (CO->CANmodule[0]->CANnormal)
 	{
-		bool_t syncWas = CO_process_SYNC_RPDO(CO, delta_us);
-		CO_process_TPDO(CO, syncWas, delta_us);
+		bool_t syncWas = CO_process_SYNC(CO, delta_us, NULL);
+		CO_process_RPDO(CO, syncWas);
+		CO_process_TPDO(CO, syncWas, delta_us, NULL);
 	}
 
-	if(process_timer > ticks_per_ms)
+	if (process_timer > ticks_per_ms)
 	{
 		process_timer -= ticks_per_ms;
 		reset = CO_process(CO, 1, NULL);
-		switch(reset)
+		switch (reset)
 		{
-			case CO_RESET_APP:
-				platform_do_reset();
-				break;
-			case CO_RESET_COMM:
-				{
-					CO_delete((int32_t)CAN1);
-					canopen_link_init();
-				}
-				break;
-			default:
-				break;
+		case CO_RESET_APP:
+			platform_do_reset();
+			break;
+		case CO_RESET_COMM:
+		{
+			CO_delete((int32_t)CAN1);
+			canopen_link_init();
+		}
+		break;
+		default:
+			break;
 		}
 	}
+	/* Nonblocking application code may go here. */
+
+	/* Process EEPROM */
+
+	/* optional sleep for short time */
 }
 
+CO_ReturnError_t CO_init(
+	int32_t CANbaseAddress,
+	uint8_t nodeId,
+	uint16_t bitRate)
+{
+	CO_ReturnError_t err;
+
+	/* Allocate memory */
+
+	err = CO_new(&heapMemoryUsed);
+	if (err)
+	{
+		return err;
+	}
+
+	/* CANopen communication reset - initialize CANopen objects *******************/
+	uint16_t timer1msPrevious;
+
+	/* disable CAN and CAN interrupts */
+
+	/* initialize CANopen */
+	err = CO_CANinit(CANbaseAddress, bitRate);
+	if (err)
+	{
+		CO_delete(CANbaseAddress);
+		return err;
+	}
+
+	err = CO_CANopenInit(nodeId);
+	if (err)
+	{
+		CO_delete(CANbaseAddress);
+		return err;
+	}
+
+	return CO_ERROR_NO;
+}

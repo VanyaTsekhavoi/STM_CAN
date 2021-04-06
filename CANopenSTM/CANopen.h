@@ -29,14 +29,15 @@
 #define CANopen_H
 
 #include "CO_driver.h"
-#include "301/CO_SDOserver.h"
-#include "301/CO_SDOclient.h"
-#include "301/CO_Emergency.h"
-#include "301/CO_NMT_Heartbeat.h"
-#include "301/CO_TIME.h"
-#include "301/CO_SYNC.h"
-#include "301/CO_PDO.h"
-#include "301/CO_HBconsumer.h"
+#include "../CANopenNode/301/CO_SDOserver.h"
+#include "../CANopenNode/301/CO_SDOclient.h"
+#include "../CANopenNode/301/CO_Emergency.h"
+#include "../CANopenNode/301/CO_NMT_Heartbeat.h"
+#include "../CANopenNode/301/CO_TIME.h"
+#include "../CANopenNode/301/CO_SYNC.h"
+#include "../CANopenNode/301/CO_PDO.h"
+#include "../CANopenNode/301/CO_HBconsumer.h"
+
 #include "CO_OD.h"
 
 #ifdef __cplusplus
@@ -280,13 +281,13 @@ typedef struct {
     CO_SRDOGuard_t *SRDOGuard;       /**< SRDO objects */
     CO_SRDO_t *SRDO[CO_NO_SRDO];     /**< SRDO objects */
 #endif
-#if CO_NO_LSS_SLAVE == 1 || defined CO_DOXYGEN
+#if CO_NO_LSS_SLAVE & 0 == 1 || defined CO_DOXYGEN
     CO_LSSslave_t *LSSslave;         /**< LSS slave object */
 #endif
-#if CO_NO_LSS_MASTER == 1 || defined CO_DOXYGEN
+#if CO_NO_LSS_MASTER & 0 == 1 || defined CO_DOXYGEN
     CO_LSSmaster_t *LSSmaster;       /**< LSS master object */
 #endif
-#if ((CO_CONFIG_GTW) & CO_CONFIG_GTW_ASCII) || defined CO_DOXYGEN
+#if ((CO_CONFIG_GTW)&CO_CONFIG_GTW_ASCII & 0) || defined CO_DOXYGEN
     CO_GTWA_t *gtwa;                /**< Gateway-ascii object (CiA309-3) */
 #endif
 #if CO_NO_TRACE > 0 || defined CO_DOXYGEN

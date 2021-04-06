@@ -45,8 +45,9 @@
  * to do so, delete this exception statement from your version.
  */
 
+#include "CO_driver_temp.h"
 #include "CO_driver.h"
-#include "CO_Emergency.h"
+#include "../CANopenNode/301/CO_Emergency.h"
 #include "can.h"
 
 static void delay(uint32_t d)

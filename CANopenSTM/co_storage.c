@@ -1,8 +1,9 @@
 #include "CANopen.h"
-#include "CO_SDO.h"
+#include "../CANopenNode/301/CO_SDOserver.h"
+#include "../CANopenNode/301/CO_SDOclient.h"
 #include "co_storage.h"
-#include "platform_flash.h"
-#include "crc32.h"
+//#include "platform_flash.h"
+//#include "crc32.h"
 
 #include <string.h>
 

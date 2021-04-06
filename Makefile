@@ -67,12 +67,12 @@ Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c \
 Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pcd.c \
 Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pcd_ex.c \
 Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_usb.c \
-Src/system_stm32f7xx.c \
-CANopenSTM/canopen_link.c \
-CANopenSTM/CO_driver.c \
-CANopenSTM/CO_OD.c \
-CANopenSTM/co_storage.c \
-CANopenSTM/CANopen.c
+Src/system_stm32f7xx.c 
+
+C_SOURCES += $(wildcard CANopenSTM/*.c)
+C_SOURCES += $(wildcard CANopenNode/301/*.c)
+C_SOURCES += $(wildcard CANopenNode/305/*.c)
+#C_SOURCES += $(wildcard CANopenNode/example/CO_O*.c)
 
 # ASM sources
 ASM_SOURCES =  \
@@ -82,7 +82,7 @@ startup_stm32f767xx.s
 #######################################
 # binaries
 #######################################
-GCC_PATH = /home/user/Documents/ARMTools/gcc-arm-none-eabi-9-2019-q4-major/bin
+GCC_PATH = /usr/bin
 PREFIX = arm-none-eabi-
 # The gcc compiler bin path can be either defined in make command via GCC_PATH variable (> make GCC_PATH=xxx)
 # either it can be added to the PATH environment variable.
@@ -136,8 +136,10 @@ C_INCLUDES =  \
 -IDrivers/CMSIS/Device/ST/STM32F7xx/Include \
 -IDrivers/CMSIS/include \
 -IDrivers/CMSIS/Include \
--ICANopenSTM
-
+-ICANopenSTM \
+-ICANopenNode/301 \
+-ICANopenNode/305 \
+-ICANopenNode/example
 
 # compile gcc flags
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections

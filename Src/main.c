@@ -103,7 +103,7 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
 
-  config();
+  canopen_link_init();
 
   CAN_FilterTypeDef sFilterConfig;
   sFilterConfig.FilterIdHigh = 0x0000;
@@ -138,7 +138,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    loop();
+    canopen_link_poll();
 
     /* USER CODE BEGIN 3 */
   }
