@@ -662,6 +662,15 @@ void CO_CANclearPendingSyncPDOs(CO_CANmodule_t *CANmodule);
 void CO_CANverifyErrors(CO_CANmodule_t *CANmodule);
 
 /**
+ * Receives and transmits CAN messages.
+ *
+ * Function must be called directly from high priority CAN interrupt.
+ *
+ * @param CANmodule This object.
+ */
+void CO_CANinterrupt(CO_CANmodule_t *CANmodule);
+
+/**
  * Get uint8_t value from memory buffer
  *
  * @param buf Memory buffer to get value from.
