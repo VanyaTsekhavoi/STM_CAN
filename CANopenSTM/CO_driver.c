@@ -695,6 +695,7 @@ void CO_CANinterrupt(CO_CANmodule_t *CANmodule)
 		CO_CANrxMsg_t rcvMsg;	   /* received message in CAN module */
 		uint16_t index;			   /* index of received message */
 		uint32_t rcvMsgIdent;	   /* identifier of the received message */
+		uint32_t rcvMsgIdentDebug; /* identifier of the received message in 11 bit format */
 		CO_CANrx_t *buffer = NULL; /* receive message buffer from CO_CANmodule_t object. */
 		bool_t msgMatched = false;
 
@@ -704,6 +705,7 @@ void CO_CANinterrupt(CO_CANmodule_t *CANmodule)
 		can_release_rx_message(dev);
 
 		rcvMsgIdent = rcvMsg.ident;
+		rcvMsgIdentDebug = (CAN_RI0R_STID & rcvMsg.ident) >> CAN_TI0R_STID_Pos;
 
 		/* has been received. Search rxArray form CANmodule for the same CAN-ID. */
 		buffer = &CANmodule->rxArray[0];

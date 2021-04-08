@@ -27,7 +27,9 @@
 #define CO_DRIVER_H
 
 #include <string.h>
-
+#include <stddef.h>  /* for 'NULL' */
+#include <stdint.h>  /* for 'int8_t' to 'uint64_t' */
+#include <stdbool.h> /* for 'true', 'false' */
 #include "CO_config.h"
 #include "../CANopenNode/example/CO_driver_target.h"
 
@@ -507,6 +509,17 @@ typedef enum {
                                          this may not be an error. */
 } CO_ReturnError_t;
 
+/**
+ * CAN receive message structure as aligned in CAN module. It is different in
+ * different microcontrollers. It usually contains other variables.
+ */
+typedef struct
+{
+    /** CAN identifier. It must be read through CO_CANrxMsg_readIdent() function. */
+    uint32_t ident;
+    uint8_t DLC;     /**< Length of CAN message */
+    uint8_t data[8]; /**< 8 data bytes */
+} CO_CANrxMsg_t;
 
 /**
  * Request CAN configuration (stopped) mode and *wait* until it is set.
