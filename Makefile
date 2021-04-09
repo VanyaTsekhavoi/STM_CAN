@@ -71,7 +71,10 @@ Src/system_stm32f7xx.c
 
 C_SOURCES += $(wildcard CANopenSTM/*.c)
 C_SOURCES += $(wildcard CANopenNode/301/*.c)
+C_SOURCES += $(wildcard CANopenNode/303/*.c)
+C_SOURCES += $(wildcard CANopenNode/304/*.c)
 C_SOURCES += $(wildcard CANopenNode/305/*.c)
+C_SOURCES += $(wildcard CANopenNode/*.c)
 #C_SOURCES += $(wildcard CANopenNode/example/CO_O*.c)
 
 # ASM sources
@@ -137,9 +140,7 @@ C_INCLUDES =  \
 -IDrivers/CMSIS/include \
 -IDrivers/CMSIS/Include \
 -ICANopenSTM \
--ICANopenNode/301 \
--ICANopenNode/305 \
--ICANopenNode/example
+-ICANopenNode 
 
 # compile gcc flags
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections

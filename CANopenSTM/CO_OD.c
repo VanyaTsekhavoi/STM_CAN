@@ -12,9 +12,9 @@
 *******************************************************************************/
 // For CANopenNode V2 users, C macro `CO_VERSION_MAJOR=2` has to be added to project options
 #ifndef CO_VERSION_MAJOR
- #include "CO_driver.h"
+ #include "301/CO_driver.h"
  #include "CO_OD.h"
- #include "../CANopenNode/301/CO_SDOserver.h"
+ #include "301/CO_SDOserver.h"
 #elif CO_VERSION_MAJOR < 4
  #include "301/CO_driver.h"
  #include "CO_OD.h"
