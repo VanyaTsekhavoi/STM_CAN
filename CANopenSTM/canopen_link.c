@@ -64,8 +64,9 @@ void canopen_link_init()
 
 	timebase_init();
 	timebase_mark(&clk);
-	clk_mhz = HAL_RCC_GetHCLKFreq() / 1000000;
-	ticks_per_ms = HAL_RCC_GetHCLKFreq() / 1000;
+	uint32_t sysTickPrescaler = SysTick_CTRL_CLKSOURCE_Msk ? 1 : 8;
+	clk_mhz = HAL_RCC_GetHCLKFreq() / sysTickPrescaler / 1000000;
+	ticks_per_ms = HAL_RCC_GetHCLKFreq() / sysTickPrescaler / 1000;
 }
 
 void canopen_link_poll()
@@ -86,8 +87,7 @@ void canopen_link_poll()
 
 	if (process_timer > ticks_per_ms)
 	{
-		process_timer -= ticks_per_ms;
-		reset = CO_process(CO, 1, NULL);
+		reset = CO_process(CO, process_timer / clk_mhz, NULL);
 		switch (reset)
 		{
 		case CO_RESET_APP:
@@ -102,6 +102,7 @@ void canopen_link_poll()
 		default:
 			break;
 		}
+		process_timer -= ticks_per_ms;
 	}
 	/* Nonblocking application code may go here. */
 
