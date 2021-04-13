@@ -80,9 +80,24 @@ void canopen_link_poll()
 
 	if (CO->CANmodule[0]->CANnormal)
 	{
-		bool_t syncWas = CO_process_SYNC(CO, delta_us, NULL);
+		bool_t syncWas;
+
+		/* Process Sync */
+		syncWas = CO_process_SYNC(CO, delta_us, NULL);
+
+		/* Read inputs */
 		CO_process_RPDO(CO, syncWas);
+
+		/* Further I/O or nonblocking application code may go here. */
+
+		/* Write outputs */
 		CO_process_TPDO(CO, syncWas, delta_us, NULL);
+
+		/* verify timer overflow */
+		if (0)
+		{
+			CO_errorReport(CO->em, CO_EM_ISR_TIMER_OVERFLOW, CO_EMC_SOFTWARE_INTERNAL, 0U);
+		}
 	}
 
 	if (process_timer > ticks_per_ms)

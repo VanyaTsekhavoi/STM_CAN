@@ -15,7 +15,7 @@
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="Nucleo_project.xdd" fileCreator="IvTs" fileCreationDate="2021-04-08" fileCreationTime="16:41:25.0000000+03:00" fileModifiedBy="" fileModificationDate="2021-04-08" fileModificationTime="16:42:27.7008330+03:00" fileVersion="-" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="Nucleo_project.xdd" fileCreator="IvTs" fileCreationDate="2021-04-08" fileCreationTime="16:41:25.0000000+03:00" fileModifiedBy="" fileModificationDate="2021-04-12" fileModificationTime="18:39:37.0706610+03:00" fileVersion="-" supportedLanguages="en" xmlns="">
       <q1:DeviceIdentity>
         <q1:vendorName>CANopenNode</q1:vendorName>
         <q1:vendorID></q1:vendorID>
@@ -91,13 +91,17 @@
             <q1:subrange lowerLimit="0" upperLimit="16" />
             <DINT />
           </q1:array>
-          <q1:array name="Read input 8 bit" uniqueID="UID_ARR_6000">
+          <q1:array name="Read Input 8 bit" uniqueID="UID_ARR_6000">
             <q1:subrange lowerLimit="0" upperLimit="8" />
             <USINT />
           </q1:array>
-          <q1:array name="Write output 8 bit" uniqueID="UID_ARR_6200">
+          <q1:array name="Write Output 8 bit" uniqueID="UID_ARR_6200">
             <q1:subrange lowerLimit="0" upperLimit="8" />
             <USINT />
+          </q1:array>
+          <q1:array name="Write Output 16-bit" uniqueID="UID_ARR_6300">
+            <q1:subrange lowerLimit="0" upperLimit="4" />
+            <UINT />
           </q1:array>
           <q1:array name="Read analogue input 16 bit" uniqueID="UID_ARR_6401">
             <q1:subrange lowerLimit="0" upperLimit="12" />
@@ -2833,6 +2837,35 @@ Trigger time - If integer value passes 'TraceConfig-&gt;threshold', then time is
             <USINT />
             <q1:defaultValue value="0x00" />
           </q1:parameter>
+          <q1:parameter uniqueID="UID_OBJ_6300">
+            <description lang="en">PWM outputs on hardware.</description>
+            <q1:dataTypeIDRef uniqueIDRef="UID_ARR_6300" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_630000">
+            <label lang="en">max sub-index</label>
+            <USINT />
+            <q1:defaultValue value="4" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_630001" access="readWrite">
+            <label lang="en">PWM1</label>
+            <UINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_630002" access="readWrite">
+            <label lang="en">PWM2</label>
+            <UINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_630003" access="readWrite">
+            <label lang="en">PWM3</label>
+            <UINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
+          <q1:parameter uniqueID="UID_SUB_630004" access="readWrite">
+            <label lang="en">PWM4</label>
+            <UINT />
+            <q1:defaultValue value="0" />
+          </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_6401">
             <description lang="en">Analogue inputs from hardware. The integer value is left adjusted.</description>
             <q1:dataTypeIDRef uniqueIDRef="UID_ARR_6401" />
@@ -2968,7 +3001,7 @@ Trigger time - If integer value passes 'TraceConfig-&gt;threshold', then time is
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="Nucleo_project.xdd" fileCreator="IvTs" fileCreationDate="2021-04-08" fileCreationTime="16:41:25.0000000+03:00" fileModificationDate="2021-04-08" fileModificationTime="16:42:27.7008330+03:00" fileVersion="-" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="Nucleo_project.xdd" fileCreator="IvTs" fileCreationDate="2021-04-08" fileCreationTime="16:41:25.0000000+03:00" fileModificationDate="2021-04-12" fileModificationTime="18:39:37.0706610+03:00" fileVersion="-" supportedLanguages="en" xmlns="">
       <ApplicationLayers>
         <q2:CANopenObjectList>
           <CANopenObject index="1000" name="Device type" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_1000" />
@@ -3353,7 +3386,7 @@ Trigger time - If integer value passes 'TraceConfig-&gt;threshold', then time is
             <CANopenSubObject subIndex="05" name="Plot" objectType="7" PDOmapping="no" uniqueIDRef="UID_SUB_240205" />
             <CANopenSubObject subIndex="06" name="Trigger time" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_240206" />
           </CANopenObject>
-          <CANopenObject index="6000" name="Read input 8 bit" objectType="8" uniqueIDRef="UID_OBJ_6000" subNumber="9">
+          <CANopenObject index="6000" name="Read Input 8 bit" objectType="8" uniqueIDRef="UID_OBJ_6000" subNumber="9">
             <CANopenSubObject subIndex="00" name="max sub-index" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_600000" />
             <CANopenSubObject subIndex="01" name="Input" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_600001" />
             <CANopenSubObject subIndex="02" name="Input" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_600002" />
@@ -3364,7 +3397,7 @@ Trigger time - If integer value passes 'TraceConfig-&gt;threshold', then time is
             <CANopenSubObject subIndex="07" name="Input" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_600007" />
             <CANopenSubObject subIndex="08" name="Input" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_600008" />
           </CANopenObject>
-          <CANopenObject index="6200" name="Write output 8 bit" objectType="8" uniqueIDRef="UID_OBJ_6200" subNumber="9">
+          <CANopenObject index="6200" name="Write Output 8 bit" objectType="8" uniqueIDRef="UID_OBJ_6200" subNumber="9">
             <CANopenSubObject subIndex="00" name="max sub-index" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_620000" />
             <CANopenSubObject subIndex="01" name="Output" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_620001" />
             <CANopenSubObject subIndex="02" name="Output" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_620002" />
@@ -3374,6 +3407,13 @@ Trigger time - If integer value passes 'TraceConfig-&gt;threshold', then time is
             <CANopenSubObject subIndex="06" name="Output" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_620006" />
             <CANopenSubObject subIndex="07" name="Output" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_620007" />
             <CANopenSubObject subIndex="08" name="Output" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_620008" />
+          </CANopenObject>
+          <CANopenObject index="6300" name="Write Output 16-bit" objectType="8" uniqueIDRef="UID_OBJ_6300" subNumber="5">
+            <CANopenSubObject subIndex="00" name="max sub-index" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_630000" />
+            <CANopenSubObject subIndex="01" name="PWM1" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_630001" />
+            <CANopenSubObject subIndex="02" name="PWM2" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_630002" />
+            <CANopenSubObject subIndex="03" name="PWM3" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_630003" />
+            <CANopenSubObject subIndex="04" name="PWM4" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_630004" />
           </CANopenObject>
           <CANopenObject index="6401" name="Read analogue input 16 bit" objectType="8" uniqueIDRef="UID_OBJ_6401" subNumber="13">
             <CANopenSubObject subIndex="00" name="max sub-index" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_640100" />
