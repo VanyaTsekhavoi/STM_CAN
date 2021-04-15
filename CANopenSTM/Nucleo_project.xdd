@@ -15,7 +15,7 @@
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="Nucleo_project.xdd" fileCreator="IvTs" fileCreationDate="2021-04-08" fileCreationTime="16:41:25.0000000+03:00" fileModifiedBy="" fileModificationDate="2021-04-12" fileModificationTime="18:39:37.0706610+03:00" fileVersion="-" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q1="http://www.canopen.org/xml/1.1" xsi:type="q1:ProfileBody_Device_CANopen" formatName="CANopen" formatVersion="1.0" fileName="Nucleo_project.xdd" fileCreator="IvTs" fileCreationDate="2021-04-08" fileCreationTime="16:41:25.0000000+03:00" fileModifiedBy="" fileModificationDate="2021-04-22" fileModificationTime="23:02:30.3495220+03:00" fileVersion="-" supportedLanguages="en" xmlns="">
       <q1:DeviceIdentity>
         <q1:vendorName>CANopenNode</q1:vendorName>
         <q1:vendorID></q1:vendorID>
@@ -98,10 +98,6 @@
           <q1:array name="Write Output 8 bit" uniqueID="UID_ARR_6200">
             <q1:subrange lowerLimit="0" upperLimit="8" />
             <USINT />
-          </q1:array>
-          <q1:array name="Write Output 16-bit" uniqueID="UID_ARR_6300">
-            <q1:subrange lowerLimit="0" upperLimit="4" />
-            <UINT />
           </q1:array>
           <q1:array name="Read analogue input 16 bit" uniqueID="UID_ARR_6401">
             <q1:subrange lowerLimit="0" upperLimit="12" />
@@ -1197,7 +1193,7 @@ value = 255:     asynchronous</description>
           <q1:parameter uniqueID="UID_SUB_140102" access="readWrite">
             <label lang="en">transmission type</label>
             <USINT />
-            <q1:defaultValue value="254" />
+            <q1:defaultValue value="1" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_1402">
             <description lang="en">0x1400 - 0x15FF RPDO communication parameter (see description for 0x1400)</description>
@@ -1324,27 +1320,27 @@ bit 16-31: index from OD</description>
           <q1:parameter uniqueID="UID_SUB_160100" access="readWrite">
             <label lang="en">Number of mapped objects</label>
             <USINT />
-            <q1:defaultValue value="0" />
+            <q1:defaultValue value="4" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_160101" access="readWrite">
             <label lang="en">mapped object 1</label>
             <UDINT />
-            <q1:defaultValue value="0x00000000" />
+            <q1:defaultValue value="0x64110110" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_160102" access="readWrite">
             <label lang="en">mapped object 2</label>
             <UDINT />
-            <q1:defaultValue value="0x00000000" />
+            <q1:defaultValue value="0x64110210" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_160103" access="readWrite">
             <label lang="en">mapped object 3</label>
             <UDINT />
-            <q1:defaultValue value="0x00000000" />
+            <q1:defaultValue value="0x64110310" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_160104" access="readWrite">
             <label lang="en">mapped object 4</label>
             <UDINT />
-            <q1:defaultValue value="0x00000000" />
+            <q1:defaultValue value="0x64110410" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_160105" access="readWrite">
             <label lang="en">mapped object 5</label>
@@ -1810,12 +1806,12 @@ bit 16-31: index from OD</description>
           <q1:parameter uniqueID="UID_SUB_1A0100" access="readWrite">
             <label lang="en">Number of mapped objects</label>
             <USINT />
-            <q1:defaultValue value="0" />
+            <q1:defaultValue value="1" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_1A0101" access="readWrite">
             <label lang="en">mapped object 1</label>
             <UDINT />
-            <q1:defaultValue value="0x00000000" />
+            <q1:defaultValue value="0x64010110" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_1A0102" access="readWrite">
             <label lang="en">mapped object 2</label>
@@ -2837,35 +2833,6 @@ Trigger time - If integer value passes 'TraceConfig-&gt;threshold', then time is
             <USINT />
             <q1:defaultValue value="0x00" />
           </q1:parameter>
-          <q1:parameter uniqueID="UID_OBJ_6300">
-            <description lang="en">PWM outputs on hardware.</description>
-            <q1:dataTypeIDRef uniqueIDRef="UID_ARR_6300" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_630000">
-            <label lang="en">max sub-index</label>
-            <USINT />
-            <q1:defaultValue value="4" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_630001" access="readWrite">
-            <label lang="en">PWM1</label>
-            <UINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_630002" access="readWrite">
-            <label lang="en">PWM2</label>
-            <UINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_630003" access="readWrite">
-            <label lang="en">PWM3</label>
-            <UINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
-          <q1:parameter uniqueID="UID_SUB_630004" access="readWrite">
-            <label lang="en">PWM4</label>
-            <UINT />
-            <q1:defaultValue value="0" />
-          </q1:parameter>
           <q1:parameter uniqueID="UID_OBJ_6401">
             <description lang="en">Analogue inputs from hardware. The integer value is left adjusted.</description>
             <q1:dataTypeIDRef uniqueIDRef="UID_ARR_6401" />
@@ -2945,22 +2912,22 @@ Trigger time - If integer value passes 'TraceConfig-&gt;threshold', then time is
             <q1:defaultValue value="8" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_641101" access="readWrite">
-            <label lang="en">Output</label>
+            <label lang="en">PWM1</label>
             <INT />
             <q1:defaultValue value="0" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_641102" access="readWrite">
-            <label lang="en">Output</label>
+            <label lang="en">PWM2</label>
             <INT />
             <q1:defaultValue value="0" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_641103" access="readWrite">
-            <label lang="en">Output</label>
+            <label lang="en">PWM3</label>
             <INT />
             <q1:defaultValue value="0" />
           </q1:parameter>
           <q1:parameter uniqueID="UID_SUB_641104" access="readWrite">
-            <label lang="en">Output</label>
+            <label lang="en">PWM4</label>
             <INT />
             <q1:defaultValue value="0" />
           </q1:parameter>
@@ -3001,7 +2968,7 @@ Trigger time - If integer value passes 'TraceConfig-&gt;threshold', then time is
         <ProfileTechnology>CANopen</ProfileTechnology>
       </ISO15745Reference>
     </ProfileHeader>
-    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="Nucleo_project.xdd" fileCreator="IvTs" fileCreationDate="2021-04-08" fileCreationTime="16:41:25.0000000+03:00" fileModificationDate="2021-04-12" fileModificationTime="18:39:37.0706610+03:00" fileVersion="-" supportedLanguages="en" xmlns="">
+    <ProfileBody xmlns:q2="http://www.canopen.org/xml/1.1" xsi:type="q2:ProfileBody_CommunicationNetwork_CANopen" formatName="CANopen" formatVersion="1.0" fileName="Nucleo_project.xdd" fileCreator="IvTs" fileCreationDate="2021-04-08" fileCreationTime="16:41:25.0000000+03:00" fileModificationDate="2021-04-22" fileModificationTime="23:02:30.3495220+03:00" fileVersion="-" supportedLanguages="en" xmlns="">
       <ApplicationLayers>
         <q2:CANopenObjectList>
           <CANopenObject index="1000" name="Device type" objectType="7" PDOmapping="no" uniqueIDRef="UID_OBJ_1000" />
@@ -3408,13 +3375,6 @@ Trigger time - If integer value passes 'TraceConfig-&gt;threshold', then time is
             <CANopenSubObject subIndex="07" name="Output" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_620007" />
             <CANopenSubObject subIndex="08" name="Output" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_620008" />
           </CANopenObject>
-          <CANopenObject index="6300" name="Write Output 16-bit" objectType="8" uniqueIDRef="UID_OBJ_6300" subNumber="5">
-            <CANopenSubObject subIndex="00" name="max sub-index" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_630000" />
-            <CANopenSubObject subIndex="01" name="PWM1" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_630001" />
-            <CANopenSubObject subIndex="02" name="PWM2" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_630002" />
-            <CANopenSubObject subIndex="03" name="PWM3" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_630003" />
-            <CANopenSubObject subIndex="04" name="PWM4" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_630004" />
-          </CANopenObject>
           <CANopenObject index="6401" name="Read analogue input 16 bit" objectType="8" uniqueIDRef="UID_OBJ_6401" subNumber="13">
             <CANopenSubObject subIndex="00" name="max sub-index" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_640100" />
             <CANopenSubObject subIndex="01" name="Input" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_640101" />
@@ -3432,10 +3392,10 @@ Trigger time - If integer value passes 'TraceConfig-&gt;threshold', then time is
           </CANopenObject>
           <CANopenObject index="6411" name="Write analogue output 16 bit" objectType="8" uniqueIDRef="UID_OBJ_6411" subNumber="9">
             <CANopenSubObject subIndex="00" name="max sub-index" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_641100" />
-            <CANopenSubObject subIndex="01" name="Output" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_641101" />
-            <CANopenSubObject subIndex="02" name="Output" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_641102" />
-            <CANopenSubObject subIndex="03" name="Output" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_641103" />
-            <CANopenSubObject subIndex="04" name="Output" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_641104" />
+            <CANopenSubObject subIndex="01" name="PWM1" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_641101" />
+            <CANopenSubObject subIndex="02" name="PWM2" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_641102" />
+            <CANopenSubObject subIndex="03" name="PWM3" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_641103" />
+            <CANopenSubObject subIndex="04" name="PWM4" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_641104" />
             <CANopenSubObject subIndex="05" name="Output" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_641105" />
             <CANopenSubObject subIndex="06" name="Output" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_641106" />
             <CANopenSubObject subIndex="07" name="Output" objectType="7" PDOmapping="optional" uniqueIDRef="UID_SUB_641107" />

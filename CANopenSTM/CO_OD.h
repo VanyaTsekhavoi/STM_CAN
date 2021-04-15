@@ -39,11 +39,11 @@
 
 /*******************************************************************************
    FILE INFO:
-      FileName:     Nucleo_project.xml
+      FileName:     Nucleo_project.xdd
       FileVersion:  -
-      CreationTime: 
-      CreationDate: 
-      CreatedBy:    IT
+      CreationTime: 4:41PM
+      CreationDate: 04-08-2021
+      CreatedBy:    IvTs
 *******************************************************************************/
 
 
@@ -636,10 +636,10 @@
         #define OD_6411_writeAnalogueOutput16Bit                    0x6411
 
         #define OD_6411_0_writeAnalogueOutput16Bit_maxSubIndex      0
-        #define OD_6411_1_writeAnalogueOutput16Bit_output           1
-        #define OD_6411_2_writeAnalogueOutput16Bit_output           2
-        #define OD_6411_3_writeAnalogueOutput16Bit_output           3
-        #define OD_6411_4_writeAnalogueOutput16Bit_output           4
+        #define OD_6411_1_writeAnalogueOutput16Bit_PWM1             1
+        #define OD_6411_2_writeAnalogueOutput16Bit_PWM2             2
+        #define OD_6411_3_writeAnalogueOutput16Bit_PWM3             3
+        #define OD_6411_4_writeAnalogueOutput16Bit_PWM4             4
         #define OD_6411_5_writeAnalogueOutput16Bit_output           5
         #define OD_6411_6_writeAnalogueOutput16Bit_output           6
         #define OD_6411_7_writeAnalogueOutput16Bit_output           7
@@ -905,7 +905,11 @@ extern struct sCO_OD_EEPROM CO_OD_EEPROM;
 /*6411, Data Type: INTEGER16, Array[8] */
         #define OD_writeAnalogueOutput16Bit                         CO_OD_RAM.writeAnalogueOutput16Bit
         #define ODL_writeAnalogueOutput16Bit_arrayLength            8
-        #define ODA_writeAnalogueOutput16Bit_output                 0
+        #define ODA_writeAnalogueOutput16Bit_PWM1                   0
+        #define ODA_writeAnalogueOutput16Bit_PWM2                   1
+        #define ODA_writeAnalogueOutput16Bit_PWM3                   2
+        #define ODA_writeAnalogueOutput16Bit_PWM4                   3
+        #define ODA_writeAnalogueOutput16Bit_output                 4
 
 #endif
 // clang-format on

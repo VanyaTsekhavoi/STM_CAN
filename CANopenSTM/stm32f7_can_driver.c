@@ -298,7 +298,12 @@ static inline void can_clear_error_status(CAN_TypeDef *dev)
 
 static inline bool can_is_rx_pending(CAN_TypeDef *dev)
 {
-    return ((dev->RF0R & CAN_RF0R_FMP0_Msk) > 0) || ((dev->RF1R & CAN_RF1R_FMP1_Msk) > 0);
+    return ((dev->RF0R & CAN_RF0R_FMP0_Msk) > 0);
+}
+
+static inline int can_nbr_of_rx_pending(CAN_TypeDef *dev)
+{
+    return (dev->RF0R & CAN_RF0R_FMP0_Msk);
 }
 
 static inline int can_rx_get_dlc(CAN_TypeDef *dev)
@@ -698,12 +703,16 @@ void CO_CANinterrupt(CO_CANmodule_t *CANmodule)
         uint32_t rcvMsgIdentDebug; /* identifier of the received message in 11 bit format */
         CO_CANrx_t *buffer = NULL; /* receive message buffer from CO_CANmodule_t object. */
         bool_t msgMatched = false;
+        uint32_t nbrOfRxMsg = 0;
 
+        index = can_rx_get_filter_index(dev); /* get index of the received message here. Or something similar */
+        nbrOfRxMsg = can_nbr_of_rx_pending(dev);
+        
         rcvMsg->DLC = can_rx_get_dlc(dev);
         rcvMsg->ident = can_rx_get_ident(dev);
         can_rx_get_data(dev, rcvMsg->data);
         can_release_rx_message(dev);
-
+        
         rcvMsgIdent = rcvMsg->ident;
         rcvMsgIdentDebug = (CAN_RI0R_STID & rcvMsg->ident) >> CAN_TI0R_STID_Pos;
 
@@ -711,7 +720,7 @@ void CO_CANinterrupt(CO_CANmodule_t *CANmodule)
         {
             /* CAN module filters are used. Message with known 11-bit identifier has */
             /* been received */
-            index = can_rx_get_filter_index(dev); /* get index of the received message here. Or something similar */
+            //index = can_rx_get_filter_index(dev); /* get index of the received message here. Or something similar */
             if (index < CANmodule->rxSize)
             {
                 buffer = &CANmodule->rxArray[index];
